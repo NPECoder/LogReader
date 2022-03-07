@@ -1,4 +1,4 @@
-package com.assignment.logReader.InputReader;
+package com.assignment.logReader.inputReader;
 
 import com.assignment.logReader.models.LogRecord;
 

@@ -1,1 +1,9 @@
-{"id": "xyz", "state": "STARTED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 342354545787}
+[
+  {"id": "xyz", "state": "STARTED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 342354545787},
+  {"id": "123", "state": "STARTED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 3423545458756},
+  {"id": "xyz", "state": "FINISHED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 3423545475676},
+  {"id": "123", "state": "FINISHED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 3423545445563},
+  {"id": "abc", "state": "FINISHED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 3423545479896},
+  {"id": "abc1", "state": "STARTED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 34235454456458},
+  {"id": "abc1", "state": "FINISHED", "type": "APPLICATION_LOG", "host": 1234, "timestamp": 34235454898965}
+]

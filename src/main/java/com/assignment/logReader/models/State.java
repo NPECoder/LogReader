@@ -13,9 +13,6 @@ public enum State {
 new HashMap<>();
 
     static{
-        /*for(State s : State.values()){
-         lookup.put(s.name(),s);
-        }*/
         lookup = Arrays.stream(State.values()).collect(Collectors.toMap( e -> e.name(), e-> e));
     }
 
