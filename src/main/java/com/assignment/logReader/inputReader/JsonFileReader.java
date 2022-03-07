@@ -1,6 +1,6 @@
 package com.assignment.logReader.inputReader;
 
-import com.assignment.logReader.inputReader.processor.RecordProcesor;
+import com.assignment.logReader.processor.RecordProcessor;
 import com.assignment.logReader.models.LogRecord;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @Service
@@ -28,9 +27,9 @@ public class JsonFileReader implements IReader{
     ResourceLoader resourceLoader;
 
     @Autowired
-    RecordProcesor recordProcesor;
+    RecordProcessor recordProcesor;
 
-    public JsonFileReader(RecordProcesor recordProcesor) {
+    public JsonFileReader(RecordProcessor recordProcesor) {
 
         this.recordProcesor = recordProcesor;
     }
@@ -46,12 +45,13 @@ public class JsonFileReader implements IReader{
         return logRecord;
     }
 
-    private void readLargeJson(String path) throws IOException {
+    private void readJson(String path) throws IOException {
         try (InputStream inputStream = Files.newInputStream(Paths.get(path))) {
             try (JsonReader reader = new JsonReader(new InputStreamReader(inputStream))) {
                 reader.beginArray();
                 while (reader.hasNext()) {
                     LogRecord logRecord = new Gson().fromJson(reader, LogRecord.class);
+                    // Call record processor - for Each Event
                     recordProcesor.process(logRecord);
                 }
                 reader.endArray();

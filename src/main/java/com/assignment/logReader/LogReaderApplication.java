@@ -1,7 +1,7 @@
 package com.assignment.logReader;
 
 import com.assignment.logReader.inputReader.JsonFileReader;
-import com.assignment.logReader.inputReader.processor.RecordProcesor;
+import com.assignment.logReader.processor.RecordProcessor;
 import com.assignment.logReader.models.LogRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,7 +22,7 @@ public class LogReaderApplication {
 	}
 
 	@Autowired
-	static RecordProcesor recordProcesor;
+	static RecordProcessor recordProcesor;
 	
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(LogReaderApplication.class, args);
