@@ -5,9 +5,12 @@ import com.assignment.logReader.models.State;
 import com.assignment.logReader.repository.EventDao;
 import com.assignment.logReader.repository.EventService;
 import com.assignment.logReader.repository.dbModel.Event;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +23,7 @@ import java.util.stream.Stream;
 @Component
 public class RecordProcessor {
 
+    private final Logger logger = LoggerFactory.getLogger(RecordProcessor.class);
     @Autowired
     public RecordProcessor(EventService eventService) {
         this.eventService = eventService;
@@ -33,6 +37,9 @@ public class RecordProcessor {
 
 
     public void process(LogRecord logRecord, Map<String, Map<State,Long>> recordMap){
+        logger.info(" Processing Each record and Storing in DB  - Started" );
+        StopWatch sw = new StopWatch("Whole Application - Umbrella stopWatch");
+        sw.start();
 
         long  calDuration =0L;
         boolean  alertFlag =Boolean.FALSE;
@@ -54,6 +61,10 @@ public class RecordProcessor {
             // Add entry in Map - as It is not present already in Map
             addRecord(logRecord,recordMap);
         }
+
+        sw.stop();
+        logger.info("Store Event in DB took total / Per record: " + sw.getTotalTimeSeconds() + " seconds");
+        logger.info(" Processing Each record and Storing in DB  - Completed" );
     }
 
     public void displayAllEvents(){

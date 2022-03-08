@@ -47,6 +47,10 @@ public class EventDao implements IEventCRUD {
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource());
         jdbcTemplate.update(SQL_NEW_EVENT, new Object[]{event.getId(), event.getDuration()
                 , event.getType(), event.getHost(), event.getAlertFlag()});
+
+
+        List<Event> events = jdbcTemplate.query(SQL_FIND_ALL_EVENT, new EventRowMapper());
+        events.stream().forEach(e -> System.out.println(e.toString()));
     }
 
     public DataSource dataSource() {
