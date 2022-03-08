@@ -1,7 +1,10 @@
 package com.assignment.logReader.inputReader;
 
+import com.assignment.logReader.exception.CustomException;
+import com.assignment.logReader.models.State;
 import com.assignment.logReader.processor.RecordProcessor;
 import com.assignment.logReader.models.LogRecord;
+import com.assignment.logReader.repository.EventService;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,23 +19,29 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class JsonFileReader implements IReader{
 
-@Autowired
+    @Autowired
     Gson gson;
 
     @Autowired
     ResourceLoader resourceLoader;
 
     @Autowired
-    RecordProcessor recordProcesor;
+    RecordProcessor recordProcessor;
 
-    public JsonFileReader(RecordProcessor recordProcesor) {
+    @Autowired
+    public JsonFileReader(RecordProcessor recordProcessor) {
 
-        this.recordProcesor = recordProcesor;
+        this.recordProcessor = recordProcessor;
     }
+
+    @Autowired
+    EventService eventService;
 
     @Override
     public LogRecord read(String inputFile) throws IOException {
@@ -45,17 +54,29 @@ public class JsonFileReader implements IReader{
         return logRecord;
     }
 
-    private void readJson(String path) throws IOException {
-        try (InputStream inputStream = Files.newInputStream(Paths.get(path))) {
+    public void readJson(String path) throws CustomException {
+        Map<String, Map<State,Long>> recordMap = new ConcurrentHashMap<>();
+        Resource resource = new ClassPathResource(path);
+        try (InputStream inputStream = Files.newInputStream(Paths.get(resource.getURI()))) {
             try (JsonReader reader = new JsonReader(new InputStreamReader(inputStream))) {
                 reader.beginArray();
                 while (reader.hasNext()) {
                     LogRecord logRecord = new Gson().fromJson(reader, LogRecord.class);
                     // Call record processor - for Each Event
-                    recordProcesor.process(logRecord);
+                    RecordProcessor recordProcessor = new RecordProcessor(eventService);
+                    recordProcessor.process(logRecord,recordMap);
+
                 }
                 reader.endArray();
+
+                // Print all Event from DB
+
+
+            } catch (IOException e) {
+                    throw new CustomException("Error Occurred file reading the Input File");
             }
+        } catch (IOException | CustomException e) {
+            throw new CustomException("Error Occurred file reading the Input File");
         }
     }
 }

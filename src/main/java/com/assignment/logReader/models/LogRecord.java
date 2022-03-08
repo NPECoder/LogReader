@@ -1,5 +1,8 @@
 package com.assignment.logReader.models;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class LogRecord {
 
     String id;

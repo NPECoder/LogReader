@@ -1,5 +1,8 @@
 package com.assignment.logReader.repository.dbModel;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class Event {
 
     private String id;

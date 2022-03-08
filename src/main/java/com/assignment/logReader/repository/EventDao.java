@@ -2,9 +2,14 @@ package com.assignment.logReader.repository;
 
 import com.assignment.logReader.repository.dbModel.Event;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Repository
@@ -12,6 +17,15 @@ public class EventDao implements IEventCRUD {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    DataSource dataSource;
+
+    @Bean
+    public JdbcTemplate getJdbcTemplate() {
+
+        return new JdbcTemplate(dataSource);
+    }
 
     private static final String SQL_NEW_EVENT = "INSERT INTO EVENT(ID, Duration, Type, Host, AlertFlag) VALUES(?,?,?,?,?)";
     private static final String SQL_FIND_ALL_EVENT = "SELECT * FROM EVENT";
@@ -24,13 +38,22 @@ public class EventDao implements IEventCRUD {
     }
 
     public List<Event> findAllEvents() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource());
         List<Event> events = jdbcTemplate.query(SQL_FIND_ALL_EVENT, new EventRowMapper());
         return events;
     }
 
     public void saveEvent(Event event) {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource());
         jdbcTemplate.update(SQL_NEW_EVENT, new Object[]{event.getId(), event.getDuration()
                 , event.getType(), event.getHost(), event.getAlertFlag()});
+    }
+
+    public DataSource dataSource() {
+        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
+        EmbeddedDatabase db = builder.setType(EmbeddedDatabaseType.HSQL).addScript("classpath:Event_CreateScript.sql")
+                .build();
+        return db;
     }
 
     public void deleteEvent(String customerId) {
