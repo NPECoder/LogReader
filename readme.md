@@ -49,3 +49,8 @@ Our custom-build server logs different events to a file named logfile.txt.  Ever
 - Only one test class is created so - Run the  class - "JsonReaderTest.java" using run button. 
 - 2 test will run - one +ve case and 2nd one Negative case
 
+Spring Application Sucess log and Screenshot - as follows:
+![image](https://user-images.githubusercontent.com/101072717/157356797-bf3c5517-f00c-4f54-aa6e-3ab4e5778f40.png)
+
+[Application_Sucess_Log.txt](https://github.com/NPECoder/LogReader/files/8210969/Application_Sucess_Log.txt)
+
