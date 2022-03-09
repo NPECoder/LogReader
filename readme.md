@@ -23,35 +23,29 @@ Our custom-build server logs different events to a file named logfile.txt.  Ever
   The longest event is 123 (342354545787 - 342354545780 = 7ms)
 
 #[[##]]# Design Consideration Taken
-## Use of Object-Oriented Approach 
+# Use of Object-Oriented Approach 
 - Used the Interface to implemented loose coupling  like IReader to implemented any kind of reader in future ( JSON, XML, etc)
 
-## Large JSON file  handling
+# Large JSON file  handling
 - Reading the JSON line by line and processing each line to aviod load of Memory - while using large JSON file.
 
-## Multi Threading implementation
+# Multi Threading implementation
 - Used the Concurrent HashMap to handle the multi threading issues.
 
-## Logging and StopWatch
+# Logging and StopWatch
 - Add logging statement and used Stopwatch to calculate the processed time of application , process, step.
 
-## Test Cases
+# Test Cases
 - Add few test cases due to limited time limit
 
 
-#[[##]]# How to run the Program 
+## How to run the Program 
 - Place the required input file and replace it with existing file - "log.json"
 - Run the application using Run from Spring boot Main class - "LogReaderApplication.java"
 - log will display having all processing steps and details.
-TODO: Write usage instructions
 
-#[[##]]# Documentation
 
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README.
-For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
-#[[##]]# Running Tests
-
+## Running Tests
 - Only one test class is created so - Run the  class - "JsonReaderTest.java" using run button. 
 - 2 test will run - one +ve case and 2nd one Negative case
 
