@@ -49,8 +49,10 @@ public class EventDao implements IEventCRUD {
                 , event.getType(), event.getHost(), event.getAlertFlag()});
 
 
+        /*
+        //print All Event insert in DB  - For testing - removed post test
         List<Event> events = jdbcTemplate.query(SQL_FIND_ALL_EVENT, new EventRowMapper());
-        events.stream().forEach(e -> System.out.println(e.toString()));
+        events.stream().forEach(e -> System.out.println(e.toString()));*/
     }
 
     public DataSource dataSource() {
